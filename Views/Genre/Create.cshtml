@@ -1,0 +1,11 @@
+﻿@model Genre;
+<form asp-controller="Genre" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="Nome">Nome Nuovo Genere</label>
+        <input asp-for="Name" type="text" class="form-control" placeholder="Titolo Film">
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
