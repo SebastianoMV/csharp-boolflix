@@ -47,6 +47,45 @@ namespace csharp_boolflix.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public IActionResult UpdateFilm(int id)
+        {
+
+            MediaInfo film = _context.Infos.Include("Film").Include("Cast").Include("Generes").First();
+            MediaFilm mediaFilm = new MediaFilm();
+            mediaFilm.MediaInfo = film;
+            mediaFilm.Genres = _context.Genres.ToList();
+            mediaFilm.Cast = _context.Actors.ToList();
+
+            return View(mediaFilm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, MediaFilm form)
+        {
+            if (!ModelState.IsValid)
+            {
+                form.Film.Id = id;
+                form.Genres = _context.Genres.Where(genre => form.SelectedGenres.Contains(genre.Id)).ToList<Genre>();
+                form.Cast = _context.Actors.Where(actor => form.SelectedCast.Contains(actor.Id)).ToList<Actor>();
+                form.Genres = _context.Genres.ToList();
+                form.Cast = _context.Actors.ToList();
+                return View("Update", form);
+            }
+            MediaInfo film = _context.Infos.Where(x => x.FilmId == id).Include("Film").Include("Cast").Include("Generes").First();
+            film.Film.Title = form.Film.Title;
+            film.Film.Descrizione = form.Film.Descrizione;
+            film.Film.Durata = form.Film.Durata;
+            film.Film.VisualizationCount = 0;
+            film.Cast = _context.Actors.Where(actor => form.SelectedCast.Contains(actor.Id)).ToList<Actor>();
+            film.Generes = _context.Genres.Where(genre => form.SelectedGenres.Contains(genre.Id)).ToList<Genre>();
+
+            _context.Infos.Update(film);
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Serie()
         {
             return View();
