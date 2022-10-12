@@ -18,7 +18,13 @@
 
                 <tr>
                     <td>@film.Film.Title</td>
-                <td><a class="btn btn-outline-secondary " href="@Url.Action("UpdateFilm", "Editor", new {Id= film.FilmId})">Modifica</a></td>
+                <td>
+                    <a class="btn btn-outline-secondary " href="@Url.Action("UpdateFilm", "Editor", new {Id= film.FilmId})">Modifica</a>
+                    <form asp-controller="Editor" asp-action="Delete" asp-route-id="@film.FilmId">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    </form>
+                </td>
                 </tr>
             }
 

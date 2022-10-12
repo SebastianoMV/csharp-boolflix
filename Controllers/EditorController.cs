@@ -85,6 +85,19 @@ namespace csharp_boolflix.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int id)
+        {
+
+            Film film = _context.Films.Find(id);
+            MediaInfo mediaInfo = _context.Infos.Where(m => m.FilmId == id).First();
+
+            _context.Films.Remove(film);
+            _context.Infos.Remove(mediaInfo);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Serie()
         {
