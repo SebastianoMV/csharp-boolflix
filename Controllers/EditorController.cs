@@ -3,23 +3,47 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Linq;
 using csharp_boolflix.BoolContext;
-
+using csharp_boolflix.Models;
 
 namespace csharp_boolflix.Controllers
 {
     public class EditorController : Controller
     {
-        private readonly Context _context;
+        public Context _context = new Context();
         public IActionResult Index()
         {
-            return View();
+            List<Film> filmList = _context.Films.ToList();
+            return View(filmList);
         }
 
-        public IActionResult Film()
+        public IActionResult Create()
         {
-            return View();
+            MediaFilm mediafilm = new MediaFilm();
+            mediafilm.Genres = new Context().Genres.ToList();
+            mediafilm.Cast = new Context().Actors.ToList();
+            return View(mediafilm);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(MediaFilm form)
+        {
+            using (Context context = new Context())
+            {
+                if (!ModelState.IsValid)
+                {
+                    form.Genres = _context.Genres.ToList();
+                    form.Cast = _context.Actors.ToList();
+                    return View("Create", form);
+                }
+                form.Film.VisualizationCount = 0;
+                form.Cast = context.Actors.Where(actor => form.SelectedCast.Contains(actor.Id)).ToList<Actor>();
+                form.Genres = context.Genres.Where(genre => form.SelectedGenres.Contains(genre.Id)).ToList<Genre>();
 
+                context.Add(form.Film);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
         public IActionResult Serie()
         {
             return View();

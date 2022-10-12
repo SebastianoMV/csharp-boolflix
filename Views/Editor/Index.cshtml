@@ -1,7 +1,25 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model List<Film>
 
 <div class="text-center" style="color: white;">
-    Editor
+    <a class="btn btn-primary" href="@Url.Action("Create")">Aggiungi nuovo Film</a>
 </div>
+<h3 style="color: white;">Film</h3>
+<table class="table container" style="color: white;">
+
+        <thead>
+            <tr>   
+                <th scope="col">Titolo</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Film film in Model)
+            {
+
+                <tr>
+                    <td>@film.Title</td>   
+                </tr>
+            }
+
+        </tbody>
+</table>

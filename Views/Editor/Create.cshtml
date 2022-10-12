@@ -1,0 +1,46 @@
+﻿@model MediaFilm;
+<form asp-controller="Editor" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="Nome">Nome pizza</label>
+        <input asp-for="Film.Title" type="text" class="form-control" placeholder="Titolo Film">
+        <span asp-validation-for="Film.Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Descrizione">Descrizione pizza</label>
+        <input asp-for="Film.Descrizione" type="text" class="form-control" placeholder="Descrizione Film">
+        <span asp-validation-for="Film.Descrizione" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Durata">Immagine pizza</label>
+        <input asp-for="Film.Durata" type="text" class="form-control" placeholder="Durata Film">
+        <span asp-validation-for="Film.Durata" class="text-danger"></span>
+    </div>
+
+   
+    <div class="my-3">
+        <label for="">Genere Film </label>
+        <select multiple="multiple" asp-for="SelectedGenres" rows="10" class="d-block w-100">
+
+            @foreach (Genre genre in Model.Genres)
+            {
+                <option value="@genre.Id">@genre.Name</option>
+            }
+        </select>
+        <span asp-validation-for="Genres" class="text-danger"></span>
+    </div>
+
+    <div class="my-3">
+        <label for="">Genere Film </label>
+        <select multiple="multiple" asp-for="SelectedCast" rows="10" class="d-block w-100">
+
+            @foreach (Actor actor in Model.Cast)
+            {
+                <option value="@actor.Id">@actor.Name @actor.Surname</option>
+            }
+        </select>
+        <span asp-validation-for="Genres" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
