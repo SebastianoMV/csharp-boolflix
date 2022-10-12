@@ -9,7 +9,8 @@ namespace csharp_boolflix.Controllers
 {
     public class UserController : Controller
     {
-        private readonly Context _context;
+        public Context _context = new Context();
+
         public IActionResult Index()
         {
             return View();
@@ -17,7 +18,8 @@ namespace csharp_boolflix.Controllers
 
         public IActionResult Film()
         {
-            return View();
+            List<MediaInfo> filmList = _context.Infos.Include("Film").Include("Cast").Include("Generes").ToList();
+            return View(filmList);
         }
 
         public IActionResult Serie()

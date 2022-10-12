@@ -12,7 +12,7 @@ namespace csharp_boolflix.Controllers
         public Context _context = new Context();
         public IActionResult Index()
         {
-            List<Film> filmList = _context.Films.ToList();
+            List<MediaInfo> filmList = _context.Infos.Include("Film").Include("Cast").Include("Generes").ToList();
             return View(filmList);
         }
 
@@ -40,6 +40,9 @@ namespace csharp_boolflix.Controllers
                 form.Genres = context.Genres.Where(genre => form.SelectedGenres.Contains(genre.Id)).ToList<Genre>();
 
                 context.Add(form.Film);
+                context.SaveChanges();
+                form.MediaInfo.FilmId = form.Film.Id;
+                context.Add(form.MediaInfo);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }

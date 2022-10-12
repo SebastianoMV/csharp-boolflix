@@ -2,6 +2,18 @@
     ViewData["Title"] = "Film";
 }
 
-<div class="text-center">
+<div class="text-center d-flex">
     Film
+    @foreach (MediaInfo film in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@film.Film.Title</h5>
+                <p class="card-text">@film.Film.Descrizione</p>
+                <a href="#" class="btn btn-primary">Guarda</a>
+            </div>
+        </div>
+    }
+
 </div>
